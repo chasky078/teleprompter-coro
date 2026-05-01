@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teleprompter Coro</title>
+  <style>
+    body {
+      margin: 0;
+      background: #050505;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    header {
+      height: 60px;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+    }
+
+    #screen {
+      height: calc(100vh - 140px);
+      overflow: hidden;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    #lyrics {
+      font-size: 36px;
+      line-height: 1.6;
+      text-align: center;
+      white-space: pre-wrap;
+      transform: translateY(0px);
+    }
+
+    .controls {
+      height: 80px;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      border-top: 1px solid #333;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .speed {
+      font-size: 18px;
+      min-width: 90px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🎤 Teleprompter Coro</header>
+
+  <div id="screen">
+    <div id="lyrics">
+Pega aquí la letra de la canción.
+
+Esta es la primera línea.
+Esta es la segunda línea.
+Esta es la tercera línea.
+
+Pulsa PLAY y el texto bajará solo.
+    </div>
+  </div>
+
+  <div class="controls">
+    <button onclick="togglePlay()">▶️ / ⏸️</button>
+    <button onclick="slower()">➖</button>
+    <div class="speed">Vel: <span id="speedText">1</span></div>
+    <button onclick="faster()">➕</button>
+    <button onclick="resetScroll()">↩️</button>
+  </div>
+
+  <script>
+    let playing = false;
+    let speed = 1;
+    let position = 0;
+
+    const lyrics = document.getElementById("lyrics");
+    const speedText = document.getElementById("speedText");
+
+    function scrollText() {
+      if (playing) {
+        position -= speed * 0.35;
+        lyrics.style.transform = `translateY(${position}px)`;
+      }
+      requestAnimationFrame(scrollText);
+    }
+
+    function togglePlay() {
+      playing = !playing;
+    }
+
+    function faster() {
+      speed++;
+      speedText.textContent = speed;
+    }
+
+    function slower() {
+      if (speed > 1) {
+        speed--;
+        speedText.textContent = speed;
+      }
+    }
+
+    function resetScroll() {
+      playing = false;
+      position = 0;
+      lyrics.style.transform = "translateY(0px)";
+    }
+
+    scrollText();
+  </script>
+
+</body>
+</html>
