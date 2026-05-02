@@ -1,305 +1,314 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Coro Patry</title>
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coro Patry</title>
 
-    body {
-      margin: 0;
-      background: #000;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    button {
-      border: none;
-      border-radius: 18px;
-      background: #f0f0f0;
-      color: #111;
-      font-weight: bold;
-      cursor: pointer;
-    }
+body {
+  margin: 0;
+  background: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-    #homeScreen,
-    #songsScreen,
-    #screen {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100vh;
-      background: #000;
-    }
+/* PANTALLAS */
+#homeScreen, #songsScreen, #lyricsScreen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+}
 
-    #homeScreen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      z-index: 30;
-    }
+/* HOME */
+#homeScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-    #homeScreen h1 {
-      font-size: 42px;
-      margin-bottom: 45px;
-    }
+#homeScreen h1 {
+  font-size: 40px;
+  margin-bottom: 40px;
+}
 
-    .home-btn {
-      font-size: 34px;
-      padding: 24px 50px;
-      border-radius: 24px;
-      min-width: 280px;
-    }
+/* BOTONES GENERALES */
+button {
+  border: none;
+  border-radius: 18px;
+  background: #f0f0f0;
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    #songsScreen {
-      display: none;
-      z-index: 20;
-      padding: 45px 20px 150px;
-      text-align: center;
-      overflow-y: auto;
-    }
+/* BOTÓN HOME */
+.home-btn {
+  font-size: 32px;
+  padding: 20px 40px;
+}
 
-    #songsScreen h2 {
-      font-size: 42px;
-      margin: 0 0 28px;
-    }
+/* PANTALLA CANCIONES */
+#songsScreen {
+  display: none;
+  text-align: center;
+  padding-top: 40px;
+}
 
-    .back-btn {
-      font-size: 26px;
-      padding: 14px 28px;
-      border-radius: 18px;
-      margin-bottom: 28px;
-      background: #fff;
-      color: #111;
-      font-weight: bold;
-    }
+.song-btn {
+  display: block;
+  width: 85%;
+  max-width: 500px;
+  margin: 20px auto;
+  font-size: 26px;
+  padding: 20px;
+}
 
-    .song-btn {
-      display: block;
-      width: 92%;
-      max-width: 520px;
-      margin: 0 auto 18px;
-      padding: 26px 16px;
-      font-size: 30px;
-      border-radius: 24px;
-      text-align: center;
-      line-height: 1.25;
-    }
+/* BOTÓN VOLVER */
+.back-btn {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+}
 
-    #screen {
-      display: none;
-      z-index: 10;
-      overflow: hidden;
-      padding-bottom: 130px;
-    }
+/* LETRAS */
+#lyricsScreen {
+  display: none;
+}
 
-    .topbar {
-      height: 82px;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid #333;
-      position: relative;
-      padding: 0 12px;
-    }
+header {
+  text-align: center;
+  font-size: 22px;
+  padding: 10px;
+}
 
-    .topbar-title {
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      padding-left: 95px;
-      padding-right: 10px;
-      white-space: nowrap;
-    }
+#lyricsWindow {
+  height: calc(100vh - 150px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .topbar .back-btn-small {
-      position: absolute;
-      left: 12px;
-      top: 14px;
-      font-size: 18px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: #fff;
-      color: #111;
-      font-weight: bold;
-    }
+#lyrics {
+  font-size: 40px;
+  text-align: center;
+  line-height: 1.6;
+  padding: 20px;
+}
 
-    #lyricsWindow {
-      height: calc(100vh - 212px);
-      overflow: hidden;
-      padding: 35px 22px 20px;
-    }
+/* CONTROLES */
+.controls {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
 
-    #lyrics {
-      font-size: 46px;
-      line-height: 1.55;
-      text-align: center;
-      white-space: pre-wrap;
-      transform: translateY(0px);
-      will-change: transform;
-    }
+.control-btn {
+  font-size: 24px;
+  padding: 15px;
+}
 
-    .controls {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 130px;
-      padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
-      background: #111;
-      border-top: 1px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      gap: 8px;
-      z-index: 50;
-    }
-
-    .control-btn {
-      width: 92px;
-      height: 92px;
-      font-size: 42px;
-      border-radius: 24px;
-      padding: 0;
-    }
-
-    .speed {
-      min-width: 70px;
-      text-align: center;
-      color: white;
-      font-size: 26px;
-      font-weight: bold;
-      line-height: 1.2;
-    }
-
-    @media (max-width: 430px) {
-      #lyrics { font-size: 42px; }
-      .song-btn { font-size: 27px; }
-      .control-btn { width: 84px; height: 84px; font-size: 38px; }
-      .topbar-title { font-size: 22px; }
-      .topbar .back-btn-small { font-size: 17px; padding: 11px 12px; }
-    }
-  </style>
+.speed {
+  font-size: 20px;
+  text-align: center;
+}
+</style>
 </head>
 
 <body>
-  <div id="homeScreen">
-    <h1>🎤 Coro Patry</h1>
-    <button class="home-btn" onclick="irACanciones()">CANCIONES</button>
+
+<!-- HOME -->
+<div id="homeScreen">
+  <h1>🎤 Coro Patry</h1>
+  <button class="home-btn" onclick="irCanciones()">CANCIONES</button>
+</div>
+
+<!-- LISTA CANCIONES -->
+<div id="songsScreen">
+  <h2>📚 Canciones</h2>
+  <button class="back-btn" onclick="volverHome()">⬅️ Volver</button>
+
+  <button class="song-btn" onclick="cargarCancion('ERES TÚ / MOCEDADES')">🎵 ERES TÚ / MOCEDADES</button>
+
+  <button class="song-btn" onclick="cargarCancion('MEJOR / LOS BRINCOS')">🎵 MEJOR / LOS BRINCOS</button>
+
+  <button class="song-btn" onclick="cargarCancion('LOS LOCOS / NUBES DE TORMENTA')">🎵 LOS LOCOS / NUBES DE TORMENTA</button>
+
+  <button class="song-btn" onclick="cargarCancion('500 MILES / THE PROCLAIMERS')">🎵 500 MILES / THE PROCLAIMERS</button>
+</div>
+
+<!-- LETRAS -->
+<div id="lyricsScreen">
+  <button class="back-btn" onclick="volverCanciones()">⬅️ Volver</button>
+
+  <header>🎤 Teleprompter Coro</header>
+
+  <div id="lyricsWindow">
+    <div id="lyrics"></div>
   </div>
 
-  <div id="songsScreen">
-    <h2>📚 Canciones</h2>
-
-    <button class="back-btn" onclick="volverInicio()">⬅️ Volver</button>
-
-    <button class="song-btn" onclick="cargarCancion('ERES TÚ / MOCEDADES')">🎵 ERES TÚ / MOCEDADES</button>
-    <button class="song-btn" onclick="cargarCancion('MEJOR / LOS BRINCOS')">🎵 MEJOR / LOS BRINCOS</button>
-    <button class="song-btn" onclick="cargarCancion('LOS LOCOS / NUBES DE TORMENTA')">🎵 LOS LOCOS / NUBES DE TORMENTA</button>
+  <div class="controls">
+    <button class="control-btn" onclick="togglePlay()">▶️</button>
+    <button class="control-btn" onclick="slower()">➖</button>
+    <div class="speed">Vel:<br><span id="speedText">1</span></div>
+    <button class="control-btn" onclick="faster()">➕</button>
+    <button class="control-btn" onclick="resetScroll()">🔄</button>
   </div>
+</div>
 
-  <div id="screen">
-    <div class="topbar">
-      <button class="back-btn-small" onclick="volverCanciones()">⬅️ Volver</button>
-      <div class="topbar-title">🎤 Teleprompter Coro</div>
-    </div>
+<script>
+let speed = 1;
+let playing = false;
+let interval;
 
-    <div id="lyricsWindow">
-      <div id="lyrics"></div>
-    </div>
+const lyricsDiv = document.getElementById("lyrics");
+const speedText = document.getElementById("speedText");
 
-    <div class="controls">
-      <button class="control-btn" onclick="togglePlay()">▶️</button>
-      <button class="control-btn" onclick="slower()">➖</button>
-      <div class="speed">Vel:<br><span id="speedText">1</span></div>
-      <button class="control-btn" onclick="faster()">➕</button>
-      <button class="control-btn" onclick="resetScroll()">↩️</button>
-    </div>
-  </div>
-
-  <script>
-    let playing = false;
-    let speed = 1;
-    let position = 0;
-
-    const lyrics = document.getElementById("lyrics");
-    const speedText = document.getElementById("speedText");
-    const homeScreen = document.getElementById("homeScreen");
-    const songsScreen = document.getElementById("songsScreen");
-    const screen = document.getElementById("screen");
-
-        const canciones = {
+/* CANCIONES */
+    const canciones = {
       "ERES TÚ / MOCEDADES": "Tú eres como el agua de mi fuente\nTú eres el fuego de mi hogar\n\nComo una promesa, eres tú, eres tú\nComo una mañana de verano\nComo una sonrisa, eres tú, eres tú\nAsí, así, eres tú\nToda mi esperanza, eres tú, eres tú\nComo lluvia fresca en mis manos\nComo fuerte brisa, eres tú, eres tú\nAsí, así, eres tú\nEres tú\nComo el agua de mi fuente\nEres tú\nEl fuego de mi hogar\nAlgo así eres tú\nAlgo así como el fuego de mi hoguera\n(Eres tú) Algo así eres tú\nMi vida algo así eres tú\nComo mi poema, eres tú, eres tú (Uh, eres tú)\nComo una guitarra en la noche\nTodo mi horizonte, eres tú, eres tú (Ah, ah, ah)\nAsí, así, eres tú (Eres tú)\nNa, na, na, na\nNa, na, na, na\nEres tú\nComo el agua de mi fuente\nEres tú\nEl fuego de mi hogar\nAlgo así eres tú\nAlgo así como el fuego de mi hoguera\nAlgo así eres tú, uuuuuh (Eres tú)\nMi vida algo así eres tú\nAlgo así eres tú\nAlgo así como el agua de mi fuente (Como el agua de mi fuente)\nEres tú\nEl fuego de mi hogar",
       "MEJOR / LOS BRINCOS": "Mejor era cuando decías\nQue también me querías\nAhora todo pasó (ya)\nMejor era cuando pensabas\nQue me necesitabas\nAhora todo pasó (ya)\nY tú, tú\nTú ya no eres igual\nNo me digas que sí\nNo sé lo que pensar\nNo sé lo que decir\nMejor era cuando creía\nQue tú me comprendías\nAhora veo que no (no)\nMejor era cuando creía\nQue tú no me mentías\nAhora veo que sí (yo)\nY tú, tú\nTú ya no eres igual\nNo me digas que sí\nNo sé lo que pensar\nNo sé lo que decir\nMejor será\nOlvidar tu amor\nSerá mejor\nTal vez, para los dos\nTal vez, para los dos\nMejor era cuando decías\nQue también me querías\nAhora todo pasó (ya)\nMejor era cuando pensabas\nQue me necesitabas\nAhora todo pasó (ya)\nY tú, tú\nTú ya no eres igual\nNo me digas que sí\nNo sé lo que pensar\nNo sé lo que decir\nNo sé lo que pensar\nNo sé lo que decir",
-      "LOS LOCOS / NUBES DE TORMENTA": "Frente al espejo sonreí,\nno es tan difícil adivinar,\ntú volverás.\nLas horas huyen desde el reloj,\nse debaten lentas hasta morir,\nfuera de aquí, fuera de aquí. ¡Oh yeah!\n[Estribillo]\nHoy las nubes de tormenta van invadiendo el azul\n(van invadiendo el azul).\nSé que anuncian tu regreso,\nfin de la huida hacia el sur.\nLa la la la…\nLa la la la…\nLa la la la… la…\nBrotes de epidemia en el parque,\nprimavera negra para el jardín,\ntodo va mal.\nPérdidas notables de razón,\ninterés creciente horizontal,\nhacia el diván, hacia el diván. ¡Oh yeah!\nMis señales en la noche siguen su rastro de luz\n(siguen su rastro de luz).\nY me encontrarás dispuesto,\nson las costumbres del club.\n[Estribillo]\nHoy las nubes de tormenta van invadiendo el azul\n(van invadiendo el azul).\nSé que anuncian tu regreso,\nfin de la huida hacia el sur.\nLa la la la…\nLa la la la…\nLa la la la…\nOdias el calor, de otro país,\nhoy podrías regresar.\nLa la la la…"
+      "LOS LOCOS / NUBES DE TORMENTA": "Frente al espejo sonreí,\nno es tan difícil adivinar,\ntú volverás.\nLas horas huyen desde el reloj,\nse debaten lentas hasta morir,\nfuera de aquí, fuera de aquí. ¡Oh yeah!\n[Estribillo]\nHoy las nubes de tormenta van invadiendo el azul\n(van invadiendo el azul).\nSé que anuncian tu regreso,\nfin de la huida hacia el sur.\nLa la la la…\nLa la la la…\nLa la la la… la…\nBrotes de epidemia en el parque,\nprimavera negra para el jardín,\ntodo va mal.\nPérdidas notables de razón,\ninterés creciente horizontal,\nhacia el diván, hacia el diván. ¡Oh yeah!\nMis señales en la noche siguen su rastro de luz\n(siguen su rastro de luz).\nY me encontrarás dispuesto,\nson las costumbres del club.\n[Estribillo]\nHoy las nubes de tormenta van invadiendo el azul\n(van invadiendo el azul).\nSé que anuncian tu regreso,\nfin de la huida hacia el sur.\nLa la la la…\nLa la la la…\nLa la la la…\nOdias el calor, de otro país,\nhoy podrías regresar.\nLa la la la…",
+
+};,
+
+  "500 MILES / THE PROCLAIMERS": "
+When I wake up
+Well, I know I'm gonna be
+I'm gonna be the man who wakes up next to you
+When I go out
+Yeah, I know I'm gonna be
+I'm gonna be the man who goes along with you
+If I get drunk
+Well, I know I'm gonna be
+I'm gonna be the man who gets drunk next to you
+And if I haver
+Yeah, I know I'm gonna be
+I'm gonna be the man who's haverin' to you
+But I would walk five hundred miles
+And I would walk five hundred more
+Just to be the man who walked a thousand miles
+To fall down at your door
+When I'm workin'
+Yes, I know I'm gonna be
+I'm gonna be the man who's workin' hard for you
+And when the money
+Comes in for the work I do
+I'll pass almost every penny on to you
+When I come home (when I come home)
+Oh, I know I'm gonna be
+I'm gonna be the man who comes back home to you
+And if I grow old
+Well, I know I'm gonna be
+I'm gonna be the man who's growin' old with you
+But I would walk five hundred miles
+And I would walk five hundred more
+Just to be the man who walked a thousand miles
+To fall down at your door
+Da-da-da-da (da-da-da-da)
+Da-da-da-da (da-da-da-da)
+Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+Da-da-da-da (da-da-da-da)
+Da-da-da-da (da-da-da-da)
+Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+When I'm lonely
+Well, I know I'm gonna be
+I'm gonna be the man who's lonely without you
+And when I'm dreamin'
+Well, I know I'm gonna dream
+I'm gonna dream about the time when I'm with you
+When I go out (when I go out)
+Well, I know I'm gonna be
+I'm gonna be the man who goes along with you
+And when I come home (when I come home)
+Yes, I know I'm gonna be
+I'm gonna be the man who comes back home with you
+I'm gonna be the man who's comin' home with you
+But I would walk five hundred miles
+And I would walk five hundred more
+Just to be the man who walked a thousand miles
+To fall down at your door
+Da-da-da-da (da-da-da-da)
+Da-da-da-da (da-da-da-da)
+Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+Da-da-da-da (da-da-da-da)
+Da-da-da-da (da-da-da-da)
+Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+Da-da-da-da (da-da-da-da)
+Da-da-da-da (da-da-da-da)
+Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+Da-da-da-da (da-da-da-da)
+Da-da-da-da (da-da-da-da)
+Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+And I would walk five hundred miles
+And I would walk five hundred more
+Just to be the man who walked a thousand miles
+To fall down at your door
+"
+
 };
 
-    function irACanciones() {
-      homeScreen.style.display = "none";
-      songsScreen.style.display = "block";
-      screen.style.display = "none";
-      resetScroll();
-    }
+/* NAVEGACIÓN */
+function irCanciones() {
+  homeScreen.style.display = "none";
+  songsScreen.style.display = "block";
+}
 
-    function volverInicio() {
-      songsScreen.style.display = "none";
-      screen.style.display = "none";
-      homeScreen.style.display = "flex";
-      resetScroll();
-    }
+function volverHome() {
+  songsScreen.style.display = "none";
+  homeScreen.style.display = "flex";
+}
 
-    function volverCanciones() {
-      screen.style.display = "none";
-      songsScreen.style.display = "block";
-      homeScreen.style.display = "none";
-      resetScroll();
-    }
+function volverCanciones() {
+  lyricsScreen.style.display = "none";
+  songsScreen.style.display = "block";
+  resetScroll();
+}
 
-    function cargarCancion(nombre) {
-      const texto = canciones[nombre] || "Letra no encontrada.";
-      songsScreen.style.display = "none";
-      homeScreen.style.display = "none";
-      screen.style.display = "block";
-      lyrics.textContent = texto;
-      resetScroll();
-    }
+/* CARGAR CANCIÓN */
+function cargarCancion(nombre) {
+  songsScreen.style.display = "none";
+  lyricsScreen.style.display = "block";
+  lyricsDiv.innerText = canciones[nombre] || "SIN LETRA";
+}
 
-    function togglePlay() {
-      playing = !playing;
-    }
+/* CONTROLES */
+function togglePlay() {
+  playing = !playing;
+  if (playing) {
+    interval = setInterval(() => {
+      lyricsWindow.scrollTop += speed;
+    }, 50);
+  } else {
+    clearInterval(interval);
+  }
+}
 
-    function faster() {
-      speed++;
-      speedText.textContent = speed;
-    }
+function slower() {
+  if (speed > 0.5) speed -= 0.5;
+  speedText.innerText = speed;
+}
 
-    function slower() {
-      if (speed > 1) {
-        speed--;
-        speedText.textContent = speed;
-      }
-    }
+function faster() {
+  speed += 0.5;
+  speedText.innerText = speed;
+}
 
-    function resetScroll() {
-      playing = false;
-      position = 0;
-      lyrics.style.transform = "translateY(0px)";
-    }
+function resetScroll() {
+  lyricsWindow.scrollTop = 0;
+}
+</script>
 
-    function scrollText() {
-      if (playing) {
-        position -= speed * 0.35;
-        lyrics.style.transform = `translateY(${position}px)`;
-      }
-      requestAnimationFrame(scrollText);
-    }
-
-    scrollText();
-  </script>
 </body>
 </html>
