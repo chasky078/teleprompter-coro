@@ -72,7 +72,12 @@
   width: 70px;
   height: 70px;
       }
-
+.controls .control-btn {
+  font-size: 40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+}
     .speed {
   font-size: 24px;
   color: white;
@@ -107,11 +112,11 @@ Pulsa PLAY y el texto bajará solo.
   </div>
 
   <div class="controls">
-    <button onclick="togglePlay()">▶️ / ⏸️</button>
-    <button onclick="slower()">➖</button>
-    <div class="speed">Vel: <span id="speedText">1</span></div>
-    <button onclick="faster()">➕</button>
-    <button onclick="resetScroll()">↩️</button>
+  <button class="control-btn" onclick="togglePlay()">▶️</button>
+  <button class="control-btn" onclick="slower()">➖</button>
+  <div class="speed">Vel: <span id="speedText">1</span></div>
+  <button class="control-btn" onclick="faster()">➕</button>
+  <button class="control-btn" onclick="resetScroll()">↩️</button>
   </div>
 
   <script>
