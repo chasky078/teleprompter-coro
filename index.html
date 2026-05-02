@@ -179,6 +179,13 @@ El fuego de mi hogar
   lyrics.textContent = text;
   resetScroll();
     }
+    function cargarCancion(nombre) {
+  const texto = canciones[nombre];
+  lyrics.textContent = texto;
+  resetScroll();
+
+  alert("🎵 Cargada: " + nombre);
+}
     scrollText();
   </script>
 
