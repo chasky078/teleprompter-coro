@@ -160,6 +160,17 @@
   </div>
 
   <div id="screen">
+    <button onclick="volverCanciones()" style="
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  z-index: 100;
+">
+⬅️ Volver
+    </button>
     <header>🎤 Teleprompter Coro</header>
     <div id="lyricsWindow">
       <div id="lyrics"></div>
@@ -195,7 +206,10 @@
       songsScreen.style.display = "block";
       screen.style.display = "none";
     }
-
+function volverCanciones() {
+  document.getElementById("screen").style.display = "none";
+  document.getElementById("songsScreen").style.display = "block";
+}
     function cargarCancion(nombre) {
       const texto = canciones[nombre] || "Letra no encontrada.";
       songsScreen.style.display = "none";
