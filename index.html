@@ -206,7 +206,10 @@ Algo así como el agua de mi fuente (Como el agua de mi fuente)
 Eres tú
 El fuego de mi hogar`
 };
-
+function irACanciones() {
+  document.getElementById("homeScreen").style.display = "none";
+  document.getElementById("songsScreen").style.display = "block";
+}
     function scrollText() {
       if (playing) {
         position -= speed * 0.35;
@@ -244,6 +247,17 @@ El fuego de mi hogar`
   resetScroll();
     }
     function cargarCancion(nombre) {
+
+  document.getElementById("songsScreen").style.display = "none";
+  document.getElementById("screen").style.display = "block";
+
+  const texto = canciones[nombre];
+  lyrics.textContent = texto;
+
+  resetScroll();
+
+  alert("🎵 Cargada: " + nombre);
+    }
   const texto = canciones[nombre];
   lyrics.textContent = texto;
   resetScroll();
