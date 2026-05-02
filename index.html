@@ -1,416 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Coro Patry</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  color: white;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-}
-
-button {
-  border: none;
-  border-radius: 18px;
-  background: #f0f0f0;
-  color: #111;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#homeScreen,
-#songsScreen,
-#lyricsScreen {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100vh;
-  background: #000;
-}
-
-#homeScreen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 24px;
-}
-
-#homeScreen h1 {
-  font-size: 42px;
-  margin: 0 0 40px;
-}
-
-.home-btn {
-  font-size: 32px;
-  padding: 22px 46px;
-  border-radius: 24px;
-  min-width: 260px;
-}
-
-#songsScreen {
-  display: none;
-  text-align: center;
-  padding: 42px 18px 30px;
-  overflow-y: auto;
-}
-
-#songsScreen h2 {
-  font-size: 38px;
-  margin: 0 0 22px;
-}
-
-.back-btn {
-  display: inline-block;
-  font-size: 24px;
-  padding: 14px 28px;
-  border-radius: 18px;
-  margin: 0 auto 26px;
-}
-
-.song-btn {
-  display: block;
-  width: 92%;
-  max-width: 540px;
-  margin: 0 auto 18px;
-  font-size: 27px;
-  padding: 22px 16px;
-  border-radius: 22px;
-  line-height: 1.2;
-}
-
-#lyricsScreen {
-  display: none;
-  overflow: hidden;
-  padding-bottom: 120px;
-}
-
-.lyrics-top {
-  height: 82px;
-  background: #111;
-  border-bottom: 1px solid #333;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-}
-
-.lyrics-top .back-btn {
-  margin: 0;
-  font-size: 19px;
-  padding: 11px 16px;
-  flex: 0 0 auto;
-}
-
-.lyrics-title {
-  flex: 1;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  padding-right: 84px;
-}
-
-#lyricsWindow {
-  height: calc(100vh - 212px);
-  overflow: hidden;
-  padding: 28px 22px 20px;
-}
-
-#lyrics {
-  font-size: 42px;
-  line-height: 1.55;
-  text-align: center;
-  white-space: pre-wrap;
-  transform: translateY(0px);
-  will-change: transform;
-}
-
-.controls {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 130px;
-  padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
-  background: #111;
-  border-top: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 8px;
-}
-
-.control-btn {
-  width: 84px;
-  height: 84px;
-  font-size: 38px;
-  border-radius: 24px;
-  padding: 0;
-}
-
-.speed {
-  min-width: 68px;
-  text-align: center;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-@media (max-width: 430px) {
-  #homeScreen h1 {
-    font-size: 38px;
-  }
-
-  .home-btn {
-    font-size: 30px;
-  }
-
-  #songsScreen h2 {
-    font-size: 34px;
-  }
-
-  .song-btn {
-    font-size: 24px;
-    padding: 20px 14px;
-  }
-
-  #lyrics {
-    font-size: 38px;
-  }
-
-  .control-btn {
-    width: 78px;
-    height: 78px;
-    font-size: 34px;
-  }
-
-  .speed {
-    font-size: 22px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div id="homeScreen">
-  <h1>🎤 Coro Patry</h1>
-  <button class="home-btn" onclick="irCanciones()">CANCIONES</button>
-</div>
-
-<div id="songsScreen">
-  <h2>📚 Canciones</h2>
-  <button class="back-btn" onclick="volverHome()">⬅️ Volver</button>
-
-  <button class="song-btn" onclick="cargarCancion('ERES TÚ / MOCEDADES')">🎵 ERES TÚ / MOCEDADES</button>
-  <button class="song-btn" onclick="cargarCancion('MEJOR / LOS BRINCOS')">🎵 MEJOR / LOS BRINCOS</button>
-  <button class="song-btn" onclick="cargarCancion('LOS LOCOS / NUBES DE TORMENTA')">🎵 LOS LOCOS / NUBES DE TORMENTA</button>
-  <button class="song-btn" onclick="cargarCancion('500 MILES / THE PROCLAIMERS')">🎵 500 MILES / THE PROCLAIMERS</button>
-</div>
-
-<div id="lyricsScreen">
-  <div class="lyrics-top">
-    <button class="back-btn" onclick="volverCanciones()">⬅️ Volver</button>
-    <div class="lyrics-title">🎤 Teleprompter Coro</div>
-  </div>
-
-  <div id="lyricsWindow">
-    <div id="lyrics"></div>
-  </div>
-
-  <div class="controls">
-    <button class="control-btn" onclick="togglePlay()">▶️</button>
-    <button class="control-btn" onclick="slower()">➖</button>
-    <div class="speed">Vel:<br><span id="speedText">1</span></div>
-    <button class="control-btn" onclick="faster()">➕</button>
-    <button class="control-btn" onclick="resetScroll()">🔄</button>
-  </div>
-</div>
-
-<script>
-let playing = false;
-let speed = 1;
-let position = 0;
-
-const homeScreen = document.getElementById("homeScreen");
-const songsScreen = document.getElementById("songsScreen");
-const lyricsScreen = document.getElementById("lyricsScreen");
-const lyrics = document.getElementById("lyrics");
-const speedText = document.getElementById("speedText");
-
-const canciones = {
-  "ERES TÚ / MOCEDADES": `TÃº eres como el agua de mi fuente
-TÃº eres el fuego de mi hogar
-
-Como una promesa, eres tÃº, eres tÃº
-Como una maÃ±ana de verano
-Como una sonrisa, eres tÃº, eres tÃº
-AsÃ­, asÃ­, eres tÃº
-Toda mi esperanza, eres tÃº, eres tÃº
-Como lluvia fresca en mis manos
-Como fuerte brisa, eres tÃº, eres tÃº
-AsÃ­, asÃ­, eres tÃº
-Eres tÃº
-Como el agua de mi fuente
-Eres tÃº
-El fuego de mi hogar
-Algo asÃ­ eres tÃº
-Algo asÃ­ como el fuego de mi hoguera
-(Eres tÃº) Algo asÃ­ eres tÃº
-Mi vida algo asÃ­ eres tÃº
-Como mi poema, eres tÃº, eres tÃº (Uh, eres tÃº)
-Como una guitarra en la noche
-Todo mi horizonte, eres tÃº, eres tÃº (Ah, ah, ah)
-AsÃ­, asÃ­, eres tÃº (Eres tÃº)
-Na, na, na, na
-Na, na, na, na
-Eres tÃº
-Como el agua de mi fuente
-Eres tÃº
-El fuego de mi hogar
-Algo asÃ­ eres tÃº
-Algo asÃ­ como el fuego de mi hoguera
-Algo asÃ­ eres tÃº, uuuuuh (Eres tÃº)
-Mi vida algo asÃ­ eres tÃº
-Algo asÃ­ eres tÃº
-Algo asÃ­ como el agua de mi fuente (Como el agua de mi fuente)
-Eres tÃº
-El fuego de mi hogar`,
-
-  "MEJOR / LOS BRINCOS": `Mejor era cuando decÃ­as
-Que tambiÃ©n me querÃ­as
-Ahora todo pasÃ³ (ya)
-Mejor era cuando pensabas
-Que me necesitabas
-Ahora todo pasÃ³ (ya)
-Y tÃº, tÃº
-TÃº ya no eres igual
-No me digas que sÃ­
-No sÃ© lo que pensar
-No sÃ© lo que decir
-Mejor era cuando creÃ­a
-Que tÃº me comprendÃ­as
-Ahora veo que no (no)
-Mejor era cuando creÃ­a
-Que tÃº no me mentÃ­as
-Ahora veo que sÃ­ (yo)
-Y tÃº, tÃº
-TÃº ya no eres igual
-No me digas que sÃ­
-No sÃ© lo que pensar
-No sÃ© lo que decir
-Mejor serÃ¡
-Olvidar tu amor
-SerÃ¡ mejor
-Tal vez, para los dos
-Tal vez, para los dos
-Mejor era cuando decÃ­as
-Que tambiÃ©n me querÃ­as
-Ahora todo pasÃ³ (ya)
-Mejor era cuando pensabas
-Que me necesitabas
-Ahora todo pasÃ³ (ya)
-Y tÃº, tÃº
-TÃº ya no eres igual
-No me digas que sÃ­
-No sÃ© lo que pensar
-No sÃ© lo que decir
-No sÃ© lo que pensar
-No sÃ© lo que decir`,
-
-  "LOS LOCOS / NUBES DE TORMENTA": `Frente al espejo sonreÃ­,
-no es tan difÃ­cil adivinar,
-tÃº volverÃ¡s.
-Las horas huyen desde el reloj,
-se debaten lentas hasta morir,
-fuera de aquÃ­, fuera de aquÃ­. Â¡Oh yeah!
-[Estribillo]
-Hoy las nubes de tormenta van invadiendo el azul
-(van invadiendo el azul).
-SÃ© que anuncian tu regreso,
-fin de la huida hacia el sur.
-La la la laâ¦
-La la la laâ¦
-La la la laâ¦ laâ¦
-Brotes de epidemia en el parque,
-primavera negra para el jardÃ­n,
-todo va mal.
-PÃ©rdidas notables de razÃ³n,
-interÃ©s creciente horizontal,
-hacia el divÃ¡n, hacia el divÃ¡n. Â¡Oh yeah!
-Mis seÃ±ales en la noche siguen su rastro de luz
-(siguen su rastro de luz).
-Y me encontrarÃ¡s dispuesto,
-son las costumbres del club.
-[Estribillo]
-Hoy las nubes de tormenta van invadiendo el azul
-(van invadiendo el azul).
-SÃ© que anuncian tu regreso,
-fin de la huida hacia el sur.
-La la la laâ¦
-La la la laâ¦
-La la la laâ¦
-Odias el calor, de otro paÃ­s,
-hoy podrÃ­as regresar.
-La la la laâ¦`,
-
-  "500 MILES / THE PROCLAIMERS": `When I wake up
+When I wake up
 Well, I know I'm gonna be
 I'm gonna be the man who wakes up next to you
 When I go out
 Yeah, I know I'm gonna be
 I'm gonna be the man who goes along with you
+
 If I get drunk
 Well, I know I'm gonna be
 I'm gonna be the man who gets drunk next to you
 And if I haver
 Yeah, I know I'm gonna be
 I'm gonna be the man who's haverin' to you
+
 But I would walk five hundred miles
 And I would walk five hundred more
 Just to be the man who walked a thousand miles
 To fall down at your door
+
 When I'm workin'
 Yes, I know I'm gonna be
 I'm gonna be the man who's workin' hard for you
 And when the money
 Comes in for the work I do
 I'll pass almost every penny on to you
+
 When I come home (when I come home)
 Oh, I know I'm gonna be
 I'm gonna be the man who comes back home to you
 And if I grow old
 Well, I know I'm gonna be
 I'm gonna be the man who's growin' old with you
+
 But I would walk five hundred miles
 And I would walk five hundred more
 Just to be the man who walked a thousand miles
 To fall down at your door
+
 Da-da-da-da (da-da-da-da)
 Da-da-da-da (da-da-da-da)
 Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
 Da-da-da-da (da-da-da-da)
 Da-da-da-da (da-da-da-da)
 Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+
 When I'm lonely
 Well, I know I'm gonna be
 I'm gonna be the man who's lonely without you
 And when I'm dreamin'
 Well, I know I'm gonna dream
 I'm gonna dream about the time when I'm with you
+
 When I go out (when I go out)
 Well, I know I'm gonna be
 I'm gonna be the man who goes along with you
@@ -418,88 +57,27 @@ And when I come home (when I come home)
 Yes, I know I'm gonna be
 I'm gonna be the man who comes back home with you
 I'm gonna be the man who's comin' home with you
+
 But I would walk five hundred miles
 And I would walk five hundred more
 Just to be the man who walked a thousand miles
 To fall down at your door
+
 Da-da-da-da (da-da-da-da)
 Da-da-da-da (da-da-da-da)
 Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
 Da-da-da-da (da-da-da-da)
 Da-da-da-da (da-da-da-da)
 Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+
 Da-da-da-da (da-da-da-da)
 Da-da-da-da (da-da-da-da)
 Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
 Da-da-da-da (da-da-da-da)
 Da-da-da-da (da-da-da-da)
 Da-da-dum-diddy-dum-diddy-dum-diddy-da-da-da
+
 And I would walk five hundred miles
 And I would walk five hundred more
 Just to be the man who walked a thousand miles
-To fall down at your door`
-};
-
-function irCanciones() {
-  homeScreen.style.display = "none";
-  songsScreen.style.display = "block";
-  lyricsScreen.style.display = "none";
-}
-
-function volverHome() {
-  songsScreen.style.display = "none";
-  lyricsScreen.style.display = "none";
-  homeScreen.style.display = "flex";
-  resetScroll();
-}
-
-function volverCanciones() {
-  lyricsScreen.style.display = "none";
-  songsScreen.style.display = "block";
-  resetScroll();
-}
-
-function cargarCancion(nombre) {
-  const texto = canciones[nombre] || "SIN LETRA";
-  lyrics.textContent = texto;
-  songsScreen.style.display = "none";
-  homeScreen.style.display = "none";
-  lyricsScreen.style.display = "block";
-  resetScroll();
-}
-
-function togglePlay() {
-  playing = !playing;
-}
-
-function faster() {
-  speed += 0.5;
-  speedText.textContent = speed;
-}
-
-function slower() {
-  if (speed > 0.5) {
-    speed -= 0.5;
-    speedText.textContent = speed;
-  }
-}
-
-function resetScroll() {
-  playing = false;
-  position = 0;
-  lyrics.style.transform = "translateY(0px)";
-}
-
-function scrollText() {
-  if (playing) {
-    position -= speed * 0.35;
-    lyrics.style.transform = `translateY(${position}px)`;
-  }
-  requestAnimationFrame(scrollText);
-}
-
-scrollText();
-</script>
-
-</body>
-</html>
+To fall down at your door
